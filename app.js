@@ -20,7 +20,7 @@ wss.on('connection', (ws) => {
 
   ws.on('message', (message) => {
     console.log('Received:', message.toString())
-    if (message.toString == "ping") {
+    if (message.toString() == "ping") {
       ws.send("pong")
     }
   })
