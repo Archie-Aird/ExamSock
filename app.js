@@ -18,6 +18,7 @@ function kick(id) {
     return false
   }
   ws.close()
+  return true
 }
 
 // HTTP routes
