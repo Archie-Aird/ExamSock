@@ -1,12 +1,13 @@
 const express = require('express')
 const { createServer } = require('http')
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
 const WebSocket = require('ws')
 
 const app = express()
 const server = createServer(app)
-const port = process.env.PORT || 10000
+const port = process.env.PORT || 10000'
+const clients = new Map()
 
 // Serves WebSocket connections at /ws (any path is fine)
 const wss = new WebSocket.Server({ server, path: '/ws' })
@@ -18,15 +19,15 @@ app.get('/', (req, res) => {
 
 // WebSocket connections
 wss.on('connection', (ws) => {
-  console.log('WebSocket client connected')
-
+  id = uuidv4()
+  console.log('WebSocket client connected: ' + id)
+  ws.send(id)
+  clients.set(id,ws)
   ws.on('message', (message) => {
     msg = message.toString()
     console.log('Received:', message.toString())
-    if (msg == "ping") {
-      ws.send("pong")
-    } else if (msg == "register") {
-      ws.send("client registered: 
+    if (msg == "whoami") {
+      ws.send(id)
     }
   })
 })
