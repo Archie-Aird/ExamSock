@@ -43,6 +43,7 @@ wss.on('connection', (ws) => {
       } else {
         ws.send("ERR:DISCON:CLIENTNOTFOUND")
       }
+    }
   })
 })
 
