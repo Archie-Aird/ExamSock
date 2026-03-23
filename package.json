@@ -4,6 +4,7 @@
   "main": "app.js",
   "dependencies": {
     "ws": "8.20.0",
-    "express": "5.2.1"
+    "express": "5.2.1",
+    "uuid": "15.0.0"
   }
 }
