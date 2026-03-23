@@ -12,6 +12,14 @@ const clients = new Map()
 // Serves WebSocket connections at /ws (any path is fine)
 const wss = new WebSocket.Server({ server, path: '/ws' })
 
+function kick(id) {
+  ws = clients.get(id)
+  if (!ws) {
+    return false
+  }
+  ws.close()
+}
+
 // HTTP routes
 app.get('/', (req, res) => {
   res.send('ExamSock WS Server at /ws!')
@@ -28,7 +36,13 @@ wss.on('connection', (ws) => {
     console.log('Received:', message.toString())
     if (msg == "whoami") {
       ws.send(id)
-    }
+    } else (msg.startsWith("discon:") {
+      id = msg.split(":")[1]
+      if (kick(id)) {
+        ws.send("SUC:DISCON:")
+      } else {
+        ws.send("ERR:DISCON:CLIENTNOTFOUND")
+      }
   })
 })
 
