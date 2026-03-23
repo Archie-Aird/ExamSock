@@ -1,53 +1,62 @@
 const express = require('express')
 const { createServer } = require('http')
-const { v4: uuidv4 } = require('uuid');
-
+const { v4: uuidv4 } = require('uuid')
 const WebSocket = require('ws')
 
 const app = express()
 const server = createServer(app)
 const port = process.env.PORT || 10000
+
 const clients = new Map()
 
-// Serves WebSocket connections at /ws (any path is fine)
 const wss = new WebSocket.Server({ server, path: '/ws' })
 
 function kick(id) {
-  ws = clients.get(id)
-  if (!ws) {
-    return false
-  }
-  ws.close()
-  return true
+    const client = clients.get(id)
+    if (!client) return false
+    client.ws.close()
+    clients.delete(id)
+    return true
 }
 
-// HTTP routes
 app.get('/', (req, res) => {
-  res.send('ExamSock WS Server at /ws!')
+    res.send('examsock ws server at /ws!')
 })
 
-// WebSocket connections
 wss.on('connection', (ws) => {
-  id = uuidv4()
-  console.log('WebSocket client connected: ' + id)
-  ws.send(id)
-  clients.set(id,ws)
-  ws.on('message', (message) => {
-    msg = message.toString()
-    console.log('Received:', message.toString())
-    if (msg == "whoami") {
-      ws.send(id)
-    } else if (msg.startsWith("discon:")) {
-      id = msg.split(":")[1]
-      if (kick(id)) {
-        ws.send("SUC:DISCON:")
-      } else {
-        ws.send("ERR:DISCON:CLIENTNOTFOUND")
-      }
-    }
-  })
+    const id = uuidv4()
+    clients.set(id, { ws, role: "stu" })
+
+    ws.send(id)
+
+    ws.on('message', (message) => {
+        const msg = message.toString()
+        const client = clients.get(id)
+
+        if (msg === "whoami") {
+            ws.send(id)
+        } else if (msg.startsWith("discon:")) {
+            const targetId = msg.split(":")[1]
+            if (kick(targetId)) {
+                ws.send("suc:discon:")
+            } else {
+                ws.send("err:discon:clientnotfound")
+            }
+        } else if (msg === "promo") {
+            if (client.role === "tea") {
+                ws.send("err:promo:alreadyteacher")
+            } else {
+                client.role = "tea"
+                ws.send("suc:promo")
+            }
+        }
+    })
+
+    ws.on('close', () => {
+        clients.delete(id)
+    })
 })
 
 server.listen(port, () => {
-  console.log(`Server listening on port ${port}`)
+    console.log(`server listening on port ${port}`)
 })
