@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "examsock",
+  "main": "app.js",
+  "dependencies": {
+    "ws": "8.20.0",
+    "express": "5.2.1"
+  }
+}
