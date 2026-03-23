@@ -36,7 +36,7 @@ wss.on('connection', (ws) => {
     console.log('Received:', message.toString())
     if (msg == "whoami") {
       ws.send(id)
-    } else (msg.startsWith("discon:") {
+    } else (msg.startsWith("discon:")) {
       id = msg.split(":")[1]
       if (kick(id)) {
         ws.send("SUC:DISCON:")
