@@ -49,6 +49,8 @@ wss.on('connection', (ws) => {
                 client.role = "tea"
                 ws.send("suc:promo")
             }
+        } else if (msg.startsWith("role")) {
+            ws.send(client.role)
         }
     })
 
