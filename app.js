@@ -6,7 +6,7 @@ const WebSocket = require('ws')
 
 const app = express()
 const server = createServer(app)
-const port = process.env.PORT || 10000'
+const port = process.env.PORT || 10000
 const clients = new Map()
 
 // Serves WebSocket connections at /ws (any path is fine)
