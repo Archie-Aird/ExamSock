@@ -8,7 +8,7 @@ const server = createServer(app)
 const port = process.env.PORT || 10000
 
 const clients = new Map()
-
+const codes = new Map()
 const wss = new WebSocket.Server({ server, path: '/ws' })
 
 function kick(id) {
@@ -49,8 +49,14 @@ wss.on('connection', (ws) => {
                 client.role = "tea"
                 ws.send("suc:promo")
             }
-        } else if (msg.startsWith("role")) {
+        } else if (msg ==="role") {
             ws.send(client.role)
+        } else if (msg.startsWith("join:") {
+            code = msg.split(":")[1]
+            if (codes.get(code)) {
+                client.code = code
+                clients.get(codes.get(code)).send("msg:join:")
+            }
         }
     })
 
