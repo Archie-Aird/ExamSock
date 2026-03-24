@@ -57,6 +57,11 @@ wss.on('connection', (ws) => {
                 client.code = code
                 clients.get(codes.get(code)).send("msg:join:")
             }
+        } else if (msg.startsWith('submit:')) {
+            wat = msg.split(":")[1]
+            console.log(wat)
+        } else {
+            ws.send(`err:${msg}:cmdnotfound`)
         }
     })
 
