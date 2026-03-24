@@ -51,7 +51,7 @@ wss.on('connection', (ws) => {
             }
         } else if (msg ==="role") {
             ws.send(client.role)
-        } else if (msg.startsWith("join:") {
+        } else if (msg.startsWith("join:")) {
             code = msg.split(":")[1]
             if (codes.get(code)) {
                 client.code = code
