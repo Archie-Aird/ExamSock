@@ -62,6 +62,7 @@ wss.on('connection', (ws) => {
             console.log(wat)
         } else if (msg === "exited") {
             console.log(`client id ${id} has exited`)
+            ws.send("suc:exited:acknowledged")
         }
          else {
             ws.send(`err:${msg}:cmdnotfound`)
