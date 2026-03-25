@@ -61,7 +61,10 @@ wss.on('connection', (ws) => {
             code = msg.split(":")[1]
             if (codes.get(code)) {
                 client.code = code
-                clients.get(codes.get(code)).send("msg:join:")
+                clients.get(codes.get(code)).send("msg:join:" + id)
+                ws.send("suc:join:joined")
+            } else {
+                ws.send("err:join:nosuchcode")
             }
         } else if (msg.startsWith('submit:')) {
             wat = msg.split(":")[1]
