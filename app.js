@@ -60,7 +60,10 @@ wss.on('connection', (ws) => {
         } else if (msg.startsWith('submit:')) {
             wat = msg.split(":")[1]
             console.log(wat)
-        } else {
+        } else if (msg === "exited") {
+            console.log(`client id ${id} has exited`)
+        }
+         else {
             ws.send(`err:${msg}:cmdnotfound`)
         }
     })
