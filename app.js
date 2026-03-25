@@ -35,6 +35,12 @@ wss.on('connection', (ws) => {
 
         if (msg === "whoami") {
             ws.send(id)
+        } else if (msg === "start") {
+            if (client.code) {
+                ws.send("suc:start:clear")
+                        } else {
+                ws.send("err:start:nocode")
+            }
         } else if (msg.startsWith("discon:")) {
             const targetId = msg.split(":")[1]
             if (kick(targetId)) {
